@@ -1,0 +1,128 @@
+#
+# Dusty configuration version
+#
+config_version: 2
+
+
+#
+# Common settings for all suites
+#
+global:
+
+  settings: # General config
+    project_name: TEST-EPM-SSDL # Project name
+    #
+    depots: # Upstream setting providers config (does not need to be changed)
+      vault: # HashiCorp Vault depot
+        url: https://vault.service.consul.epm-sec.projects.epam.com:8200 # Vault URL
+        namespace: bss/epm-ssdl/leaks-checker/
+        secrets_path: carrier-secrets # Secrets path
+        secrets_mount_point: dast-sast-kv # Secrets KV V2 mount point
+        auth_role_id: $!VAULT_ROLE # Auth via approle id ...
+        auth_secret_id: $!VAULT_SECRET # ... and secret id
+      minio: # MinIO depot
+        endpoint: $=carrier-minio-endpoint # S3 object storage endpoint
+        bucket: $=carrier-minio-bucket # Carrier bucket name
+        access_key: $=carrier-minio-access-key # Access key for the object storage endpoint
+        secret_key: $=carrier-minio-secret-key # Secret key for the object storage endpoint
+  #
+  processing: # Processing config
+    min_severity_filter:
+      severity: Info # Minimal severity level to report, one of: Critical, High, Medium, Low, Info
+  #
+  reporters: # Reporter config
+    jira: # Jira reporter
+      project: EPMSSDL # Jira project
+      fields: # Fields for created tickets
+        Issue Type: Bug  # (field) Ticket type
+        Assignee: Andrew_Rewoonenco@epam.com # (field) Assignee
+        Epic Link: EPMSSDL-4891 # (field) Epic
+      url: $=jira-api-url # Jira URL
+      username: $=jira-username # Jira login
+      password: $=jira-password # Jira password
+    email:
+      # mail_to: SupportEPM-TIGROperational@epam.com # List of email addresses
+      # mail_to: SpecialEPM-SSDLCheckMarx@epam.com, SupportEPM-TIGROperational@epam.com, Dzmitry_Sakavets1@epam.com # List of email addresses
+      mail_to: SpecialEPM-SSDLCheckMarx@epam.com
+      mail_cc: "Andrew_Rewoonenco@epam.com"
+      mail_bcc: ""
+      server: $=email-server # SMTP server host
+      login: $=email-login # SMTP server login
+      password: $=email-password # SMTP server password
+    html:
+      file: $WORKSPACE/{project_name}_{testing_type}_{scan_type}_{build_id}_report.html # HTML report path
+    # junit:
+    #   file: $WORKSPACE/{project_name}_{testing_type}_{scan_type}_{build_id}_report.xml # XML report path
+
+
+#
+# Test suites
+#
+suites:
+
+  # DAST: unauthorized (blind) scan
+  # dast:
+  #   #
+  #   settings: # General config
+  #     project_description: Test CheckMarx data project # Application name
+  #     environment_name: staging # Environment under testing
+  #     dast: # Settings common to all DAST scanners
+  #       target:  # Scan target
+  #   #
+  #   scanners: # Scanner config
+  #     dast:
+  #       qualys: # Qualys (R) Web Application Scanning
+  #         qualys_scanner_type: INTERNAL # Qualys scanner type: EXTERNAL or INTERNAL
+  #         qualys_scanner_pool: $=qualys-scanner-pool-budapest # (INTERNAL only) Qualys scanner pool: list of scanner appliances to choose from
+  #         qualys_api_server: $=qualys-api-server # Qualys API server URL
+  #         qualys_login: $=qualys-login # Qualys user login
+  #         qualys_password: $=qualys-password # Qualys user password
+  #         qualys_option_profile_id: $=qualys-option-profile-id # Qualys option profile ID
+  #         qualys_report_template_id: $=qualys-report-template-id # Qualys report template ID
+
+  # SAST: code scan
+  sast:
+    #
+    settings: # General config
+      project_description: Test CheckMarx data project # Application name
+      environment_name: master # Branch and component name
+    #
+    scanners:
+      sast:
+        checkmarx:
+          skip_sca: true
+          only_sast_flow: false
+          cx_host_url: https://checkmarx-dev.epm-ssdl.projects.epam.com
+          cx_team_id: 3 # DebugProjects
+          cx_username: $!CHECKMARX_USERNAME
+          cx_password: $!CHECKMARX_PASSWORD
+          # cx_certificate: ?
+          # cx_sca_auth_url: ?
+          # cx_sca_api_url: ?
+          # cx_sca_tenant: ?
+          # cx_sca_username: ?
+          # cx_sca_password: ?
+        #
+  #       # dependencycheck:
+  #       #   comp_path: $WORKSPACE/code
+  #       # gitleaks:
+  #       #   code: $WORKSPACE/code
+  #       #   use_custom_rules: true
+  #       #   squash_commits: true
+
+  # VIVIDUS: report run
+  vividus_report:
+    #
+    settings: # General config
+      project_description: Test CheckMarx data project # Application name
+      environment_name: staging # Branch and component name
+      testing_type: VIVIDUS
+      scan_type: regression
+    #
+    reporters:
+      email:
+        text_only: true
+        body: "{project_name} {project_description} {environment_name} {testing_type} scan #{build_id} was performed.<br><br>Suite: ${SUITE}<br>Environments: ${ENVIRONMENTS}<br>Result: ${VIVIDUS_RESULT}<br><br>Please review report here: <a href='${JOB_URL}artifact/'>${JOB_URL}artifact/</a>"
+      jira: true
+      html: true
+      junit: false
