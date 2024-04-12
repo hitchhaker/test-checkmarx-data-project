@@ -1,0 +1,11 @@
+---
+sourceLocationPrefix: /home/frosty/Code/CodeOSS/test-checkmarx-data-project
+baselineLinesOfCode: 307
+unicodeNewlines: false
+columnKind: utf8
+primaryLanguage: ruby
+creationMetadata:
+  sha: c967cd3d5be289fd39227847df0e637a7199d49e
+  cliVersion: 2.16.6
+  creationTime: 2024-04-04T12:09:35.313893754Z
+finalised: true

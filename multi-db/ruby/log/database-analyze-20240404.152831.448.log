@@ -1,0 +1,14 @@
+[2024-04-04 15:28:31] This is codeql database analyze multi-db/ruby --format=sarif-latest --output=ruby-results.sarif
+[2024-04-04 15:28:31] Log file was started late.
+[2024-04-04 15:28:31] [PROGRESS] database analyze> Running queries.
+[2024-04-04 15:28:32] Running plumbing command: codeql database run-queries --evaluator-log-level=5 --warnings=show --qlconfig-file=/home/frosty/Code/CodeOSS/test-checkmarx-data-project/qlconfig.yml --no-rerun --interpret-passthrough=null,--format=sarif-latest,-o=/home/frosty/Code/CodeOSS/test-checkmarx-data-project/ruby-results.sarif,--max-paths=4,--csv-location-format=line-column,--print-diagnostics-summary,--print-metrics-summary,--qlconfig-file=/home/frosty/Code/CodeOSS/test-checkmarx-data-project/qlconfig.yml,--,/home/frosty/Code/CodeOSS/test-checkmarx-data-project/multi-db/ruby -- /home/frosty/Code/CodeOSS/test-checkmarx-data-project/multi-db/ruby
+[2024-04-04 15:28:32] Calling plumbing command: codeql resolve ram --dataset=/home/frosty/Code/CodeOSS/test-checkmarx-data-project/multi-db/ruby/db-ruby --format=json
+[2024-04-04 15:28:32] [PROGRESS] resolve ram> Stringpool size measured as 2154874
+[2024-04-04 15:28:32] Plumbing command codeql resolve ram completed:
+                      [
+                        "-J-Xmx1800M",
+                        "--off-heap-ram=1515"
+                      ]
+[2024-04-04 15:28:33] Chaining via /tmp/codeql.6gDzK5Tn to plumbing: execute queries -J-Xmx1800M --off-heap-ram=1515 --verbosity=progress --logdir=/home/frosty/Code/CodeOSS/test-checkmarx-data-project/multi-db/ruby/log --evaluator-log-level=5 --warnings=show --qlconfig-file=/home/frosty/Code/CodeOSS/test-checkmarx-data-project/qlconfig.yml --no-rerun --interpret-passthrough=null,--format=sarif-latest,-o=/home/frosty/Code/CodeOSS/test-checkmarx-data-project/ruby-results.sarif,--max-paths=4,--csv-location-format=line-column,--print-diagnostics-summary,--print-metrics-summary,--qlconfig-file=/home/frosty/Code/CodeOSS/test-checkmarx-data-project/qlconfig.yml,--,/home/frosty/Code/CodeOSS/test-checkmarx-data-project/multi-db/ruby --output=/home/frosty/Code/CodeOSS/test-checkmarx-data-project/multi-db/ruby/results -- /home/frosty/Code/CodeOSS/test-checkmarx-data-project/multi-db/ruby/db-ruby codeql/ruby-queries
+[2024-04-04 15:28:33] Plumbing command codeql database run-queries completed with status 70.
+[2024-04-04 15:28:33] Exiting with code 70

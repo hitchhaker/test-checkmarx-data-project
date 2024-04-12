@@ -1,0 +1,21 @@
+{
+  "resultIdToNotes": {
+    "0|1": {
+      "status": 2,
+      "comment": "Third comment"
+    },
+    "0|0": {
+      "status": 0,
+      "comment": "This is a comment."
+    },
+    "0|2": {
+      "status": 1,
+      "comment": "Another comment."
+    },
+    "0|3": {
+      "status": 1,
+      "comment": "HttpOnly Cookie option is enabled, i think this can mitigate the risk."
+    }
+  },
+  "hiddenRules": []
+}

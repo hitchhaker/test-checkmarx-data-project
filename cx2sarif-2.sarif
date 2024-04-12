@@ -1,0 +1,227 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-2.1.0-rtm.5",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Checkmarx Scan detailed",
+          "version": "9.5.5.1002 HF10",
+          "rules": [
+            {
+              "id": "1509",
+              "name": "Stored_XSS",
+              "fullDescription": {
+                "text": "The method raw embeds untrusted data in generated output with id, at line 4 of /home/frosty/Code/CodeOSS/test-checkmarx-data-project\\code\\Test_Stored_XSS\\app\\views\\articles\\show.html.erb. This untrusted data is embedded into the output without proper sanitization or encoding, enabling an attacker to inject malicious code into the generated web-page.\r\nThe attacker would be able to alter the returned web page by saving malicious data in a data-store ahead of time. The attacker's modified data is then read from the database by the raw method with find, at line 17 of /home/frosty/Code/CodeOSS/test-checkmarx-data-project\\code\\Test_Stored_XSS\\app\\controllers\\articles_controller.rb. This untrusted data then flows through the code straight to the output web page, without sanitization. This can enable a Stored Cross-Site Scripting (XSS) attack.\r\nSimilarity ID: 549143508"
+              },
+              "help": {
+                "text": "Rule info\r\nStored_XSS\r\nRisk\r\nWhat might happen\r\nA successful XSS exploit would allow an attacker to rewrite web pages and insert malicious scripts which would alter the intended output. This could include HTML fragments, CSS styling rules, arbitrary JavaScript, or references to third party code. An attacker could use this to steal users' passwords, collect personal data such as credit card details, provide false information, or run malware. From the victim's point of view, this is performed by the genuine website, and the victim would blame the site for incurred damage.\r\nAn attacker could use legitimate access to the application to submit modified data to the application's data-store. This would then be used to construct the returned web page, triggering the attack.\r\nCause\r\nHow does it happen\r\nThe application creates web pages that include untrusted data, whether from user input, the application's database, or from other external sources. The untrusted data is embedded directly in the page's HTML, causing the browser to display it as part of the web page. If the input includes HTML fragments or JavaScript, these are displayed too, and the user cannot tell that this is not the intended page. The vulnerability is the result of directly embedding arbitrary data without first encoding it in a format that would prevent the browser from treating it like HTML or code instead of plain text.\r\nIn order to exploit this vulnerability, an attacker would load the malicious payload into the data-store, typically via regular forms on other web pages. Afterwards, the application reads this data from the data-store, and embeds it within the web page as displayed for another user.\r\nGeneral Recommendations\r\nHow to avoid it\r\n  * Fully encode all dynamic data, regardless of source, before embedding it in output.\r\n  * Encoding should be context-sensitive. For example:\r\n      + HTML encoding for HTML content\r\n      + HTML Attribute encoding for data output to attribute values\r\n      + JavaScript encoding for server-generated JavaScript\r\n  * It is recommended to use the platform-provided encoding functionality, or known security libraries for encoding output.\r\n  * Implement a Content Security Policy (CSP) with explicit whitelists for the application's resources only.\r\n  * As an extra layer of protection, validate all untrusted data, regardless of source (note this is not a replacement for encoding). Validation should be based on a whitelist: accept only data fitting a specified structure, rather than reject bad patterns. Check for:\r\n      + Data type\r\n      + Size\r\n      + Range\r\n      + Format\r\n      + Expected values\r\n  * In the Content-Type HTTP response header, explicitly define character encoding (charset) for the entire page.\r\n  * Set the HTTPOnly flag on the session cookie for 'Defense in Depth', to prevent any successful XSS exploits from stealing the cookie.\r\nSource Code Examples\r\nRuby\r\nReflecting Data from ActiveRecord To Clients in 'Raw' Output\r\n#Controller: class PagesController < ApplicationController #... user = User.find(current_id) @greeting = '<h1>Welcome' + user.name + '!</h1>' end end #View Fragment: <h1><%=raw @greeting %></h1>\r\nRelying on Rails Output to HTML Encode Outputs\r\n#Controller: class PagesController < ApplicationController #... user = User.find(current_id) @greeting = user.name end end #View Fragment: <h1>Welcome <%=@greeting %>!</h1>\r\nfor more information :[http://cwe.mitre.org/data/definitions/79.html](http://cwe.mitre.org/data/definitions/79.html)"
+              },
+              "helpUri": "https://checkmarx.epm-ssdl.projects.epam.com/cxwebclient/ViewerMain.aspx?scanid=1041232&projectid=430&pathid=1",
+              "relationships": [
+                {
+                  "target": {
+                    "id": "79",
+                    "toolComponent": {
+                      "name": "CWE"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "taxonomies": [
+        {
+          "name": "CWE",
+          "taxa": [
+            {
+              "id": "79"
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "1509",
+          "level": "error",
+          "message": {
+            "text": "I think it's vulnerable."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/home/frosty/Code/CodeOSS/test-checkmarx-data-project/code/Test_Stored_XSS/app/views/articles/show.html.erb"
+                },
+                "region": {
+                  "startLine": 4,
+                  "startColumn": 309,
+                  "endLine": 4,
+                  "endColumn": 310,
+                  "snippet": {
+                    "rendered": {
+                      "text": "&lt;%= @article.id %&gt;"
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "codeFlows": [
+            {
+              "message": {
+                "text": "Analysis Trace"
+              },
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "/home/frosty/Code/CodeOSS/test-checkmarx-data-project/code/Test_Stored_XSS/app/controllers/articles_controller.rb"
+                          },
+                          "region": {
+                            "startLine": 17,
+                            "startColumn": 32,
+                            "endLine": 17,
+                            "endColumn": 33,
+                            "snippet": {
+                              "rendered": {
+                                "text": "@article = Article.find(params[:id])"
+                              }
+                            }
+                          }
+                        },
+                        "message": {
+                          "text": "find"
+                        }
+                      }
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "/home/frosty/Code/CodeOSS/test-checkmarx-data-project/code/Test_Stored_XSS/app/controllers/articles_controller.rb"
+                          },
+                          "region": {
+                            "startLine": 17,
+                            "startColumn": 9,
+                            "endLine": 17,
+                            "endColumn": 17,
+                            "snippet": {
+                              "rendered": {
+                                "text": "@article = Article.find(params[:id])"
+                              }
+                            }
+                          }
+                        },
+                        "message": {
+                          "text": "article"
+                        }
+                      }
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "/home/frosty/Code/CodeOSS/test-checkmarx-data-project/code/Test_Stored_XSS/app/controllers/articles_controller.rb"
+                          },
+                          "region": {
+                            "startLine": 29,
+                            "startColumn": 4,
+                            "endLine": 29,
+                            "endColumn": 31,
+                            "snippet": {
+                              "rendered": {
+                                "text": "end"
+                              }
+                            }
+                          }
+                        },
+                        "message": {
+                          "text": "raw"
+                        }
+                      }
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "/home/frosty/Code/CodeOSS/test-checkmarx-data-project/code/Test_Stored_XSS/app/controllers/articles_controller.rb"
+                          },
+                          "region": {
+                            "startLine": 29,
+                            "startColumn": 4,
+                            "endLine": 29,
+                            "endColumn": 31,
+                            "snippet": {
+                              "rendered": {
+                                "text": "end"
+                              }
+                            }
+                          }
+                        },
+                        "message": {
+                          "text": "ViewMethod_b1b7ab69"
+                        }
+                      }
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "/home/frosty/Code/CodeOSS/test-checkmarx-data-project/code/Test_Stored_XSS/app/views/articles/show.html.erb"
+                          },
+                          "region": {
+                            "startLine": 4,
+                            "startColumn": 301,
+                            "endLine": 4,
+                            "endColumn": 309,
+                            "snippet": {
+                              "rendered": {
+                                "text": "&lt;%= @article.id %&gt;"
+                              }
+                            }
+                          }
+                        },
+                        "message": {
+                          "text": "article"
+                        }
+                      }
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "/home/frosty/Code/CodeOSS/test-checkmarx-data-project/code/Test_Stored_XSS/app/views/articles/show.html.erb"
+                          },
+                          "region": {
+                            "startLine": 4,
+                            "startColumn": 309,
+                            "endLine": 4,
+                            "endColumn": 310,
+                            "snippet": {
+                              "rendered": {
+                                "text": "&lt;%= @article.id %&gt;"
+                              }
+                            }
+                          }
+                        },
+                        "message": {
+                          "text": "id"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

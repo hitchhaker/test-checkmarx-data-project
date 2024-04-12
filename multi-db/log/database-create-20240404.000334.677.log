@@ -1,0 +1,35 @@
+[2024-04-04 00:03:34] This is codeql database create --db-cluster --language ruby,javascript-typescript multi-db
+[2024-04-04 00:03:34] Log file was started late.
+[2024-04-04 00:03:34] [PROGRESS] database create> Initializing databases at /home/frosty/Code/CodeOSS/test-checkmarx-data-project/multi-db.
+[2024-04-04 00:03:35] Running plumbing command: codeql database init --db-cluster --language=ruby,javascript-typescript --extractor-options-verbosity=1 --qlconfig-file=/home/frosty/Code/CodeOSS/test-checkmarx-data-project/qlconfig.yml --source-root=/home/frosty/Code/CodeOSS/test-checkmarx-data-project --allow-missing-source-root=false --allow-already-existing -- /home/frosty/Code/CodeOSS/test-checkmarx-data-project/multi-db
+[2024-04-04 00:03:35] Calling plumbing command: codeql resolve languages --extractor-options-verbosity=1 --format=betterjson
+[2024-04-04 00:03:36] [DETAILS] resolve languages> Scanning for [codeql-extractor.yml] from /home/frosty/Code/CodeOSS/codeql/codeql-workspace.yml
+[2024-04-04 00:03:37] Plumbing command codeql resolve languages completed:
+                      {
+                        "aliases" : { },
+                        "extractors" : { }
+                      }
+[2024-04-04 00:03:37] [PROGRESS] database init> Calculating baseline information in /home/frosty/Code/CodeOSS/test-checkmarx-data-project
+[2024-04-04 00:03:37] [SPAMMY] database init> Ignoring the following directories when processing baseline information: .git, .hg, .svn.
+[2024-04-04 00:03:37] [DETAILS] database init> Running command in /home/frosty/Code/CodeOSS/test-checkmarx-data-project: /home/frosty/Code/CodeOSS/codeql/tools/linux64/scc --by-file --exclude-dir .git,.hg,.svn --format json --no-large --no-min .
+[2024-04-04 00:03:37] [PROGRESS] database init> Calculated baseline information for languages:  (297ms).
+[2024-04-04 00:03:38] [PROGRESS] database init> Resolving extractor ruby.
+[2024-04-04 00:03:38] Exception caught at top level: There's no CodeQL extractor named 'ruby' installed.
+                      java.base/java.util.Optional.map(Unknown Source)
+                      com.semmle.util.data.Result.getOrThrow(Result.java:31)
+                      com.semmle.cli2.database.InitCommand.initOneDatabase(InitCommand.java:406)
+                      com.semmle.cli2.database.InitCommand.executeSubcommand(InitCommand.java:227)
+                      com.semmle.cli2.picocli.SubcommandCommon.lambda$executeSubcommandWithMessages$5(SubcommandCommon.java:803)
+                      com.semmle.cli2.picocli.SubcommandCommon.withCompilationMessages(SubcommandCommon.java:442)
+                      com.semmle.cli2.picocli.SubcommandCommon.executeSubcommandWithMessages(SubcommandCommon.java:801)
+                      com.semmle.cli2.picocli.PlumbingRunner.run(PlumbingRunner.java:119)
+                      com.semmle.cli2.picocli.SubcommandCommon.runPlumbingInProcess(SubcommandCommon.java:199)
+                      com.semmle.cli2.database.CreateCommand.executeSubcommand(CreateCommand.java:109)
+                      com.semmle.cli2.picocli.SubcommandCommon.lambda$executeSubcommandWithMessages$5(SubcommandCommon.java:803)
+                      com.semmle.cli2.picocli.SubcommandCommon.withCompilationMessages(SubcommandCommon.java:442)
+                      com.semmle.cli2.picocli.SubcommandCommon.executeSubcommandWithMessages(SubcommandCommon.java:801)
+                      com.semmle.cli2.picocli.SubcommandCommon.toplevelMain(SubcommandCommon.java:685)
+                      com.semmle.cli2.picocli.SubcommandCommon.call(SubcommandCommon.java:666)
+                      com.semmle.cli2.picocli.SubcommandMaker.runMain(SubcommandMaker.java:237)
+                      com.semmle.cli2.picocli.SubcommandMaker.runMain(SubcommandMaker.java:257)
+                      com.semmle.cli2.CodeQL.main(CodeQL.java:115)

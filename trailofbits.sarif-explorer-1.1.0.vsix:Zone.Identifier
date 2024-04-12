@@ -1,0 +1,4 @@
+[ZoneTransfer]
+ZoneId=3
+ReferrerUrl=https://marketplace.visualstudio.com/items?itemName=trailofbits.sarif-explorer
+HostUrl=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/trailofbits/vsextensions/sarif-explorer/1.1.0/vspackage
